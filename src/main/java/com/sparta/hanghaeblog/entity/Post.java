@@ -29,8 +29,6 @@ public class Post extends Timestamped{
         this.username = requestDto.getUsername();
         this.contents = requestDto.getContents();
         this.password = requestDto.getPassword();
-
-
     }
 
     public void update(PostRequestDto postRequestDto) {
