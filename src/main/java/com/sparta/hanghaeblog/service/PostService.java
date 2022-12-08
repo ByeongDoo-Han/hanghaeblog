@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -26,6 +27,14 @@ public class PostService {
     @Transactional
     public List<Post> getPosts() {
         return postRepository.findAllByOrderByModifiedAtDesc();
+    }
+
+    @Transactional
+    public PostResponseDto getOnePosts(Long id) {
+        Post post = postRepository.findById(id).orElseThrow(
+                () -> new IllegalArgumentException("게시물이 존재하지 않습니다.")
+        );
+        return new PostResponseDto(post);
     }
 
     @Transactional

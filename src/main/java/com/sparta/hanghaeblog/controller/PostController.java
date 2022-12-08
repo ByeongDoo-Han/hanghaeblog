@@ -32,6 +32,11 @@ public class PostController {
         return postService.getPosts();
     }
 
+    @GetMapping("/api/posts/{id}")
+    public PostResponseDto getOnePosts(@PathVariable Long id){
+        return postService.getOnePosts(id);
+    }
+
     @PutMapping("/api/posts/{id}")
     public PostResponseDto updatePosts(@PathVariable Long id, @RequestBody PostRequestDto requestDto){
         return postService.updatePosts(id, requestDto);

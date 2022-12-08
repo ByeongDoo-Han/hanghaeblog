@@ -38,8 +38,6 @@ public class Post extends Timestamped{
         this.password = postRequestDto.getPassword();
     }
 
-
-
     public void passwordValid(String password) {
         if(!password.equals(this.getPassword())){
             throw new IllegalArgumentException("비밀번호 불일치");
