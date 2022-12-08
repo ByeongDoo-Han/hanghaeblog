@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dewdew Blog</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script !src="">
+        //게시글 생성
+        function writePost() {
+            //작성한 글을 불러옴
+            let contents = $('#contents').val();
+            //작성한 글이 올바른지 확인
+            // if (isValidContents(contents) == false) {
+            //     return;
+            // }
+            //익명의
+        }
+        function deleteOne(id) {
+            $.ajax({
+                type: "DELETE",
+                url: `/api/memos/${id}`,
+                success: function (response) {
+                    alert('메시지 삭제에 성공하였습니다.');
+                    window.location.reload();
+                }
+            })
+        }
+    </script>
+</head>
+<body>
+    <div class="background-header">
+
+    </div>
+    <div class="wrap">
+        <div class="header">
+            <h2>지금 무슨 생각하세요?</h2>
+        </div>
+        <div class="posts-area">
+            <textarea class="write-field" placeholder="지금 무슨 생각하세요?" name="contents" id="" cols="30" rows="10"></textarea>
+            <img src="/images/send.png" alt="" onclick="writePost()">
+        </div>
+        <div id="posts-box" class="read-area">
+
+        </div>
+    </div>
+</body>
+</html>
