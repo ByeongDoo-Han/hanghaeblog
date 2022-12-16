@@ -18,7 +18,7 @@ public class PostService {
     private final PostRepository postRepository;
 
     @Transactional
-    public Post createPost(PostRequestDto requestDto){
+    public Post createPost(PostRequestDto requestDto) {
         Post post = new Post(requestDto);
         postRepository.save(post);
         return post;
@@ -48,7 +48,7 @@ public class PostService {
     }
 
     @Transactional
-    public void delete(Long id , PostDeleteDto postDeleteDto) {
+    public void delete(Long id, PostDeleteDto postDeleteDto) {
         Post post = postRepository.findById(id).orElseThrow(
                 () -> new IllegalArgumentException("게시물이 존재하지 않습니다.")
         );

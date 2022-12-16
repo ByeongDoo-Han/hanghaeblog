@@ -46,6 +46,4 @@ public class PostController {
     public void deletePost(@PathVariable Long id, @RequestBody PostDeleteDto postDeleteDto){
         postService.delete(id, postDeleteDto);
     }
-
-
 }
