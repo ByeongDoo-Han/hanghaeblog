@@ -4,8 +4,11 @@ import com.sparta.hanghaeblog.dto.PostDeleteDto;
 import com.sparta.hanghaeblog.dto.PostRequestDto;
 import com.sparta.hanghaeblog.dto.PostResponseDto;
 import com.sparta.hanghaeblog.entity.Post;
+import com.sparta.hanghaeblog.jwt.JwtUtil;
 import com.sparta.hanghaeblog.repository.PostRepository;
+import com.sparta.hanghaeblog.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.apache.tomcat.Jar;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,7 +19,8 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class PostService {
     private final PostRepository postRepository;
-
+    private final UserRepository userRepository;
+    private final JwtUtil jwtUtil;
     @Transactional
     public Post createPost(PostRequestDto requestDto) {
         Post post = new Post(requestDto);
