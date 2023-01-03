@@ -4,7 +4,6 @@ package com.sparta.hanghaeblog.jwt;
 import com.sparta.hanghaeblog.entity.UserRoleEnum;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
-import io.jsonwebtoken.security.SecurityException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -30,6 +29,7 @@ public class JwtUtil {
     private static final String BEARER_PREFIX = "Bearer ";
     // 토큰 만료시간
     private static final long TOKEN_TIME = 60 * 60 * 1000L;
+
 
     @Value("${jwt.secret.key}")
     private String secretKey;
@@ -93,4 +93,5 @@ public class JwtUtil {
                 .parseClaimsJws(token)
                 .getBody();
     }
+
 }

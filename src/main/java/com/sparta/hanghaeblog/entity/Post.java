@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Entity
@@ -20,10 +22,16 @@ public class Post extends Timestamped{
 
     @Column(nullable = false)
     private String username;
+
     @Column(nullable = false)
     private String contents;
+
     @Column(nullable = false)
     private String password;
+
+    @OrderBy(value = "modifiedAt desc")
+    @OneToMany(fetch = FetchType.LAZY)
+    private List<Comment> comments = new ArrayList<>();
 
     public Post(PostRequestDto requestDto){
         this.title = requestDto.getTitle();
@@ -43,5 +51,8 @@ public class Post extends Timestamped{
         if(!password.equals(this.getPassword())){
             throw new IllegalArgumentException("비밀번호 불일치");
         };
+    }
+    public void addCommentList(Comment comment){
+        this.comments.add(comment);
     }
 }

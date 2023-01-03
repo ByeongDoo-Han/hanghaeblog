@@ -1,8 +1,10 @@
 package com.sparta.hanghaeblog.security;
 
 import com.sparta.hanghaeblog.entity.User;
-import com.sparta.hanghaeblog.entity.User;
 import com.sparta.hanghaeblog.entity.UserRoleEnum;
+import lombok.Getter;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -11,14 +13,16 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 public class UserDetailsImpl implements UserDetails {
-
     private final User user;
     private final String username;
 
-    public UserDetailsImpl(User user, String username) {
+    public UserDetailsImpl(User user, String username, String password) {
         this.user = user;
         this.username = username;
+        this.password = password;
     }
+
+    private final String password;
 
     public User getUser() {
         return user;
@@ -37,13 +41,13 @@ public class UserDetailsImpl implements UserDetails {
     }
 
     @Override
-    public String getUsername() {
-        return this.username;
+    public String getPassword() {
+        return this.password;
     }
 
     @Override
-    public String getPassword() {
-        return null;
+    public String getUsername() {
+        return this.username;
     }
 
     @Override

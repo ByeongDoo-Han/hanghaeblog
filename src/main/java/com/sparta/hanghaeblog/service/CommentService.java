@@ -1,5 +1,7 @@
 package com.sparta.hanghaeblog.service;
 
+import com.sparta.hanghaeblog.dto.CommentRequestDto;
+import com.sparta.hanghaeblog.dto.CommentResponseDto;
 import com.sparta.hanghaeblog.entity.Comment;
 import com.sparta.hanghaeblog.entity.Post;
 import com.sparta.hanghaeblog.entity.User;
@@ -11,6 +13,26 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class CommentService {
     private final CommentRepository commentRepository;
+
+    @Transactional
+    public CommentResponseDto createComment(User user, Post post, CommentRequestDto requestDto) {
+        Comment comment = new Comment(user, requestDto, post);
+        commentRepository.save(comment);
+        post.addCommentList(comment);
+        return new CommentResponseDto(comment);
+    }
+
+
+    @Transactional
+    public CommentResponseDto updateComments(Long id, CommentRequestDto commentRequestDto) {
+        Comment comment = commentRepository.findById(id).orElseThrow(
+                () -> new IllegalArgumentException("존재하지 않는 댓글입니다.")
+        );
+        comment.update(commentRequestDto);
+        return new CommentResponseDto(comment);
+    }
+
+
     @Transactional
     public void deleteComment(Long id, Comment comment, User user, Post post) {
         if (User.isAdmin(user)){

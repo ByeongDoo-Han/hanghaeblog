@@ -24,12 +24,17 @@ public class Comment extends Timestamped{
     @JoinColumn(name = "Post_Id", nullable = false)
     private Post post;
 
-    public Comment(User user, String comment, Post post)  {
+
+
+    public Comment(User user, CommentRequestDto requestDto, Post post) {
         this.username = user.getUsername();
-        this.comment = comment;
+        this.comment = requestDto.getComment();
         this.post = post;
     }
 
+//    public void update(CommentRequestDto commentRequestDto) {
+//        this.comments = commentRequestDto.getComments();
+//    }
 
     public static boolean isSameNameComment(Comment comment, User user) {
         if (comment.getUsername().equals(user.getUsername())) {
@@ -37,5 +42,8 @@ public class Comment extends Timestamped{
         } else {
             return false;
         }
+    }
+    public void update(CommentRequestDto commentRequestDto) {
+        this.comment = commentRequestDto.getComment();
     }
 }

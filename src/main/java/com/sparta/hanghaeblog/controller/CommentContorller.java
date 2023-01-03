@@ -1,6 +1,7 @@
 package com.sparta.hanghaeblog.controller;
 
 import com.sparta.hanghaeblog.dto.CommentRequestDto;
+import com.sparta.hanghaeblog.dto.CommentResponseDto;
 import com.sparta.hanghaeblog.entity.Comment;
 import com.sparta.hanghaeblog.entity.Post;
 import com.sparta.hanghaeblog.entity.User;
@@ -12,10 +13,7 @@ import com.sparta.hanghaeblog.service.CommentService;
 import io.jsonwebtoken.Claims;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.access.method.P;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
@@ -30,6 +28,58 @@ public class CommentContorller {
     private final CommentRepository commentRepository;
     private final CommentService commentService;
 
+    @PutMapping("/api/posts/{postId}/comments/{commentId}")
+    public CommentResponseDto updateComments(@PathVariable Long postId, @PathVariable Long commentId, @RequestBody CommentRequestDto requestDto, HttpServletRequest request) {
+        // Request에서 Token 가져오기
+        String token = jwtUtil.resolveToken(request); // 토큰 꺼내기
+        Claims claims;
+
+        if (token != null) {
+            // Token 검증
+            if (jwtUtil.validateToken(token)) {
+                // 토큰에서 사용자 정보 가져오기
+                claims = jwtUtil.getUserInfoFromToken(token);
+            } else {
+                throw new IllegalArgumentException("토큰이 존재하지 않습니다.");
+            }
+            // 토큰에서 가져온 사용자 정보를 사용하여 DB 조회
+            User user = userRepository.findByUsername(claims.getSubject()).orElseThrow(
+                    () -> new IllegalArgumentException("사용자가 존재하지 않습니다.")
+            );
+
+            Post post = postRepository.findById(postId).orElseThrow(
+                    () -> new IllegalArgumentException("게시글이 존재하지 않습니다."));
+
+        }
+        return commentService.updateComments(commentId, requestDto);
+    }
+
+    @PostMapping("/api/posts/{postId}/comments")
+    public CommentResponseDto createComment(@PathVariable Long postId, @RequestBody CommentRequestDto commentRequestDto, HttpServletRequest request) {
+        // Request에서 Token 가져오기
+        String token = jwtUtil.resolveToken(request); // 토큰 꺼내기
+        Claims claims;
+
+        if (token != null) {
+            // Token 검증
+            if (jwtUtil.validateToken(token)) {
+                // 토큰에서 사용자 정보 가져오기
+                claims = jwtUtil.getUserInfoFromToken(token);
+            } else {
+                throw new IllegalArgumentException("토큰이 존재하지 않습니다.");
+            }
+            // 토큰에서 가져온 사용자 정보를 사용하여 DB 조회
+            User user = userRepository.findByUsername(claims.getSubject()).orElseThrow(
+                    () -> new IllegalArgumentException("사용자가 존재하지 않습니다.")
+            );
+
+            Post post = postRepository.findById(postId).orElseThrow(
+                    () -> new IllegalArgumentException("게시글이 존재하지 않습니다."));
+            return commentService.createComment(user, post, commentRequestDto);
+        } else {
+            throw new IllegalArgumentException("토큰이 없습니다.");
+        }
+    }
 
     @DeleteMapping("/api/posts/{post_id}/comments/{comment_id}")
     public Map deleteComment(@PathVariable Long post_id, @PathVariable Long comment_id, HttpServletRequest request) {
