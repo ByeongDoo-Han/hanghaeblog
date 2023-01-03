@@ -1,6 +1,7 @@
 package com.sparta.hanghaeblog.jwt;
 
 
+import com.sparta.hanghaeblog.config.WebSecurityConfig;
 import com.sparta.hanghaeblog.entity.UserRoleEnum;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
