@@ -39,6 +39,18 @@ public class Post extends Timestamped{
     )
     private List<Comment> comments = new ArrayList<>();
 
+    @Column(nullable = false)
+    private Integer postViewCount;
+
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    private User user;
+//    private int viewCount;
+
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
+    Set<PostLike> postLikes = new HashSet<>();
+
+
+
     public Post(PostRequestDto requestDto){
         this.title = requestDto.getTitle();
         this.username = requestDto.getUsername();

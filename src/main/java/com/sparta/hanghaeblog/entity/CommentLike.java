@@ -20,9 +20,12 @@ public class CommentLike {
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;
 
-    public CommentLike(Comment comment, User user) {
-        this.comment = comment;
+
+    public void setUser(User user){
         this.user = user;
     }
 
+    public void setComment(Comment comment){
+        this.comment = comment;
+    }
 }
