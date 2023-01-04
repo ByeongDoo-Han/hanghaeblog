@@ -1,6 +1,7 @@
 package com.sparta.hanghaeblog.config;
 
 
+
 import com.sparta.hanghaeblog.jwt.JwtAuthFilter;
 import com.sparta.hanghaeblog.jwt.JwtUtil;
 import lombok.RequiredArgsConstructor;
@@ -35,10 +36,12 @@ public class WebSecurityConfig extends WebSecurityConfiguration {
                 .requestMatchers(PathRequest.toStaticResources().atCommonLocations()));
     }
 
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         // CSRF 설정
         http.csrf().disable();
+
 
         http.authorizeRequests()
                 .antMatchers("/api/auth/**")
@@ -46,10 +49,13 @@ public class WebSecurityConfig extends WebSecurityConfiguration {
                 .anyRequest()
                 .authenticated();
 
+
         // 로그인 사용
         http.formLogin();
 
+
         http.addFilterBefore(new JwtAuthFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
+
 
         return http.build();
     }
