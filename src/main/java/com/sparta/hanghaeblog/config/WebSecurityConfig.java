@@ -1,37 +1,39 @@
 package com.sparta.hanghaeblog.config;
 
 
+
+import com.sparta.hanghaeblog.jwt.JwtAuthFilter;
+import com.sparta.hanghaeblog.jwt.JwtUtil;
+import lombok.RequiredArgsConstructor;
+import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.web.WebSecurityConfigurer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
+@RequiredArgsConstructor
 @EnableWebSecurity // 스프링 Security 지원을 가능하게 함
 public class WebSecurityConfig extends WebSecurityConfiguration {
-    protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests()
-                // image 폴더를 login 없이 허용
-                .antMatchers("/images/**").permitAll()
-                // css 폴더를 login 없이 허용
-                .antMatchers("/css/**").permitAll()
-                // 어떤 요청이든 '인증'
-                .anyRequest().authenticated()
-                .and()
-                // 로그인 기능 허용
-                .formLogin()
-                .loginPage("/user/login")
-                .defaultSuccessUrl("/")
-                .failureUrl("/user/login?error")
-                .permitAll()
-                .and()
-                // 로그아웃 기능 허용
-                .logout()
-                .permitAll();
+
+    private final JwtUtil jwtUtil;
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public WebSecurityCustomizer WebSecurityCustomizer(){
+        return (web -> web.ignoring()
+                .requestMatchers(PathRequest.toH2Console())
+                .requestMatchers(PathRequest.toStaticResources().atCommonLocations()));
     }
 
 
@@ -40,10 +42,20 @@ public class WebSecurityConfig extends WebSecurityConfiguration {
         // CSRF 설정
         http.csrf().disable();
 
-        http.authorizeRequests().anyRequest().authenticated();
+
+        http.authorizeRequests()
+                .antMatchers("/api/auth/**")
+                .permitAll()
+                .anyRequest()
+                .authenticated();
+
 
         // 로그인 사용
         http.formLogin();
+
+
+        http.addFilterBefore(new JwtAuthFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
+
 
         return http.build();
     }
