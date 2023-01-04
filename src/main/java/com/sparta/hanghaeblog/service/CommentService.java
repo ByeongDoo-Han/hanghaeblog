@@ -53,9 +53,9 @@ public class CommentService {
             // Find the comment with the given ID in the list of comments
             for (Iterator<Comment> iterator = post.getComments().iterator(); iterator.hasNext(); ) {
                 Comment comment1 = iterator.next();
-                if (comment1.getCommentId().equals(commentId)) {
-                    // Remove the comment from the list
-                    iterator.remove();
+                    if (comment1.getCommentId().equals(commentId)) {
+                        // Remove the comment from the list
+                        iterator.remove();
                     break;
                 }
             }

@@ -4,10 +4,13 @@ package com.sparta.hanghaeblog.entity;
 import com.sparta.hanghaeblog.dto.PostRequestDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Entity
@@ -41,6 +44,7 @@ public class Post extends Timestamped{
         this.username = requestDto.getUsername();
         this.contents = requestDto.getContents();
         this.password = requestDto.getPassword();
+        this.postViewCount = postLikes.size();
     }
 
     public void update(PostRequestDto postRequestDto) {
@@ -57,5 +61,9 @@ public class Post extends Timestamped{
     }
     public void addCommentList(Comment comment){
         this.comments.add(comment);
+    }
+
+    public void addPostLike(PostLike postLike){
+        this.postLikes.add(postLike);
     }
 }
