@@ -15,7 +15,7 @@ import java.util.List;
 public class Post extends Timestamped{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private Long postId;
 
     @Column(nullable = false)
     private String title;

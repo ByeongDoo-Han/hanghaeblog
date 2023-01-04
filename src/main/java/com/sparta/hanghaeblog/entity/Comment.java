@@ -11,8 +11,8 @@ import javax.persistence.*;
 @NoArgsConstructor
 public class Comment extends Timestamped{
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long commentId;
 
     @Column(nullable = false)
     private String username;
@@ -20,21 +20,27 @@ public class Comment extends Timestamped{
     @Column(nullable = false)
     private String comment;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "Post_Id", nullable = false)
+    @Column(nullable = false)
+    private String commentPassword;
+
+    @ManyToOne(
+            fetch = FetchType.LAZY
+
+    )
+    @JoinColumn(
+            name = "Post_Id",
+            nullable = false
+    )
     private Post post;
 
 
-
+    //Dto 넣으면 안된다고 함
     public Comment(User user, CommentRequestDto requestDto, Post post) {
         this.username = user.getUsername();
         this.comment = requestDto.getComment();
+        this.commentPassword = requestDto.getCommentPassword();
         this.post = post;
     }
-
-//    public void update(CommentRequestDto commentRequestDto) {
-//        this.comments = commentRequestDto.getComments();
-//    }
 
     public static boolean isSameNameComment(Comment comment, User user) {
         if (comment.getUsername().equals(user.getUsername())) {
@@ -45,5 +51,11 @@ public class Comment extends Timestamped{
     }
     public void update(CommentRequestDto commentRequestDto) {
         this.comment = commentRequestDto.getComment();
+    }
+
+    public void passwordValid(String commentPassword) {
+        if(!commentPassword.equals(this.getCommentPassword())){
+            throw new IllegalArgumentException("비밀번호 불일치");
+        }
     }
 }

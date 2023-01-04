@@ -8,5 +8,5 @@ import java.time.LocalDateTime;
 public class CommentRequestDto {
 
     private String comment;
-
+    private String commentPassword;
 }
