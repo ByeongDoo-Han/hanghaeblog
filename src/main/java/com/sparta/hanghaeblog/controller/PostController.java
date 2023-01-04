@@ -13,6 +13,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/api/auth/posts")
 public class PostController {
 
     private final PostService postService;
@@ -22,28 +23,28 @@ public class PostController {
         return new ModelAndView("index");
     }
 
-    @PostMapping("/api/posts")
-    public Post createPost(@RequestBody PostRequestDto requestDto){
+    @PostMapping("")
+    public PostResponseDto createPost(@RequestBody PostRequestDto requestDto){
         return postService.createPost(requestDto);
     }
 
-    @GetMapping("/api/posts")
-    public List<Post> getPosts() {
+    @GetMapping("/total")
+    public List<PostResponseDto> getPosts() {
         return postService.getPosts();
     }
 
-    @GetMapping("/api/posts/{id}")
-    public PostResponseDto getOnePosts(@PathVariable Long id){
-        return postService.getOnePosts(id);
+    @GetMapping("/{postId}")
+    public PostResponseDto getOnePosts(@PathVariable Long postId){
+        return postService.getOnePosts(postId);
     }
 
-    @PutMapping("/api/posts/{id}")
-    public PostResponseDto updatePosts(@PathVariable Long id, @RequestBody PostRequestDto requestDto){
-        return postService.updatePosts(id, requestDto);
+    @PutMapping("/{postId}")
+    public PostResponseDto updatePosts(@PathVariable Long postId, @RequestBody PostRequestDto requestDto){
+        return postService.updatePosts(postId, requestDto);
     }
 
-    @PostMapping("/api/posts/{id}")
-    public void deletePost(@PathVariable Long id, @RequestBody PostDeleteDto postDeleteDto){
-        postService.delete(id, postDeleteDto);
+    @PostMapping("/{postId}")
+    public void deletePost(@PathVariable Long postId, @RequestBody PostDeleteDto postDeleteDto){
+        postService.delete(postId, postDeleteDto);
     }
 }

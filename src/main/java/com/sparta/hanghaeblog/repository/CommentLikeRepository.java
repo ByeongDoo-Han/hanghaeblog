@@ -1,0 +1,12 @@
+package com.sparta.hanghaeblog.repository;
+
+import com.sparta.hanghaeblog.entity.Comment;
+import com.sparta.hanghaeblog.entity.CommentLike;
+import com.sparta.hanghaeblog.entity.User;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.Optional;
+
+public interface CommentLikeRepository extends JpaRepository<CommentLike, Long> {
+    Optional<CommentLike> findByUserAndComment(User user, Comment comment);
+}
