@@ -3,8 +3,6 @@ package com.sparta.hanghaeblog.config;
 
 import com.sparta.hanghaeblog.jwt.JwtAuthFilter;
 import com.sparta.hanghaeblog.jwt.JwtUtil;
-import com.sparta.hanghaeblog.security.CustomSecurityFilter;
-import com.sparta.hanghaeblog.security.UserDetailsServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
