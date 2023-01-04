@@ -30,7 +30,10 @@ public class Post extends Timestamped{
     private String password;
 
     @OrderBy(value = "modifiedAt desc")
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany(
+            fetch = FetchType.LAZY,
+            cascade = CascadeType.REMOVE
+    )
     private List<Comment> comments = new ArrayList<>();
 
     public Post(PostRequestDto requestDto){
