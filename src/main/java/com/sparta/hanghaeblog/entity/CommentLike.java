@@ -9,8 +9,6 @@ import javax.persistence.*;
 
 @NoArgsConstructor
 @Getter
-@Setter
-@AllArgsConstructor
 @Entity
 public class CommentLike {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
