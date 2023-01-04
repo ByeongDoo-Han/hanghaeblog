@@ -2,7 +2,6 @@ package com.sparta.hanghaeblog.config;
 
 
 <<<<<<< HEAD
-import com.sparta.hanghaeblog.security.CustomSecurityFilter;
 import com.sparta.hanghaeblog.security.UserDetailsServiceImpl;
 =======
 
