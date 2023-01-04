@@ -21,6 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+@Slf4j
 @RequiredArgsConstructor
 public class JwtAuthFilter extends OncePerRequestFilter {
 
@@ -28,28 +29,39 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        String username = request.getParameter("username");
-        String password = request.getParameter("password");
 
-        System.out.println("username = " + username);
-        System.out.println("password = " + password);
-        System.out.println("request.getRequestURI() = " + request.getRequestURI());
+        String token = jwtUtil.resolveToken(request);
 
-        if(username != null && password != null && (request.getRequestURI().equals("/api/auth/login"))){
-            UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-
-            //비밀번호 확인
-            if(!passwordEncoder.matches(password, userDetails.getPassword())){
-                throw new IllegalAccessError("비밀번호가 일치하지 않습니다.");
+        if (token != null) {
+            // Token 검증
+            if (!jwtUtil.validateToken(token)) {
+                jwtExceptionHandler(response, "Token Error", HttpStatus.UNAUTHORIZED.value());
+                return;
             }
-
-            //인증 객체 생성 및 등록
-            SecurityContext context = SecurityContextHolder.createEmptyContext();
-            Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-            context.setAuthentication(authentication);
-
-            SecurityContextHolder.setContext(context);
+            Claims claims = jwtUtil.getUserInfoFromToken(token);
+            setAuthentication(claims.getSubject());
         }
+
         filterChain.doFilter(request, response);
+    }
+
+    public void setAuthentication(String username) {
+        SecurityContext context = SecurityContextHolder.createEmptyContext();
+        Authentication authentication = jwtUtil.createAuthentication(username);
+        context.setAuthentication(authentication);
+
+        SecurityContextHolder.setContext(context);
+    }
+
+
+    public void jwtExceptionHandler(HttpServletResponse response, String msg, int statusCode) {
+        response.setStatus(statusCode);
+        response.setContentType("application/json");
+        try {
+            String json = new ObjectMapper().writeValueAsString(new SecurityExceptionDto(statusCode, msg));
+            response.getWriter().write(json);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+        }
     }
 }
