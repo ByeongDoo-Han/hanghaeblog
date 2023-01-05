@@ -32,4 +32,5 @@ public class CommentLikeService {
         private boolean isNotAlreadyLike(User user, Comment comment) {
             return commentLikeRepository.findByUserAndComment(user, comment).isEmpty();
         }
+
 }
