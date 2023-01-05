@@ -27,7 +27,7 @@ public class UserService {
     private static final String ADMIN_TOKEN = "AAABnvxRVklrnYxKZ0aHgTBcXukeZygoC";
 
     @Transactional
-    public String signUp(SignupRequestDto signupRequestDto){
+    public User signUp(SignupRequestDto signupRequestDto){
         String username = signupRequestDto.getUsername();
         String password = passwordEncoder.encode(signupRequestDto.getPassword());
 
@@ -48,8 +48,7 @@ public class UserService {
 
         User user = new User(username, password, role);
         userRepository.save(user);
-
-        return "redirect:/api/auth/login";
+        return user;
     }
     @Transactional(readOnly = true)
     public void logIn(LoginRequestDto userRequest, HttpServletResponse response){

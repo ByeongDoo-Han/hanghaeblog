@@ -23,15 +23,11 @@ import java.util.Optional;
 public class UserController {
 
     private final UserService userService;
-    private final PasswordEncoder passwordEncoder;
-    private final UserRepository userRepository;
-
-    //ADMIN_TOKEN
-    private static final String ADMIN_TOKEN = "AAABnvxRVklrnYxKZ0aHgTBcXukeZygoC";
 
     @PostMapping("/signup")
     public String signUp(@RequestBody SignupRequestDto signupRequestDto) {
-        return userService.signUp(signupRequestDto);
+        userService.signUp(signupRequestDto);
+        return "회원가입성공";
     }
 
     @PostMapping("/login")
