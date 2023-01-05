@@ -36,4 +36,12 @@ public class User {
         this.password = password;
         this.role = role;
     }
+
+    public static boolean isAdmin(User user) {
+        if (user.getRole() == UserRoleEnum.ADMIN){
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

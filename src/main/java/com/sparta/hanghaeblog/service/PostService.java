@@ -1,19 +1,20 @@
 package com.sparta.hanghaeblog.service;
 
-import com.sparta.hanghaeblog.dto.PostDeleteDto;
-import com.sparta.hanghaeblog.dto.PostRequestDto;
-import com.sparta.hanghaeblog.dto.PostResponseDto;
+import com.sparta.hanghaeblog.dto.*;
+import com.sparta.hanghaeblog.entity.Comment;
 import com.sparta.hanghaeblog.entity.Post;
 import com.sparta.hanghaeblog.jwt.JwtUtil;
 import com.sparta.hanghaeblog.repository.PostRepository;
 import com.sparta.hanghaeblog.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.apache.tomcat.Jar;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -22,28 +23,31 @@ public class PostService {
     private final UserRepository userRepository;
     private final JwtUtil jwtUtil;
     @Transactional
-    public Post createPost(PostRequestDto requestDto) {
+    public PostResponseDto createPost(PostRequestDto requestDto) {
         Post post = new Post(requestDto);
         postRepository.save(post);
-        return post;
+        return new PostResponseDto(post);
     }
 
     @Transactional
-    public List<Post> getPosts() {
-        return postRepository.findAllByOrderByModifiedAtDesc();
+    public List<PostResponseDto> getPosts() {
+        List<Post> postList = postRepository.findAllByOrderByModifiedAtDesc();
+        List<PostResponseDto> postsResponseDtoList = postList.stream().map(post -> new PostResponseDto(post)).collect(Collectors.toList());
+        return postsResponseDtoList;
     }
 
+
     @Transactional
-    public PostResponseDto getOnePosts(Long id) {
-        Post post = postRepository.findById(id).orElseThrow(
+    public PostResponseDto getOnePosts(Long postId) {
+        Post post = postRepository.findById(postId).orElseThrow(
                 () -> new IllegalArgumentException("게시물이 존재하지 않습니다.")
         );
         return new PostResponseDto(post);
     }
 
     @Transactional
-    public PostResponseDto updatePosts(Long id, PostRequestDto postRequestDto) {
-        Post post = postRepository.findById(id).orElseThrow(
+    public PostResponseDto updatePosts(Long postId, PostRequestDto postRequestDto) {
+        Post post = postRepository.findById(postId).orElseThrow(
                 () -> new IllegalArgumentException("게시물이 존재하지 않습니다.")
         );
         post.passwordValid(postRequestDto.getPassword());
@@ -52,8 +56,8 @@ public class PostService {
     }
 
     @Transactional
-    public void delete(Long id, PostDeleteDto postDeleteDto) {
-        Post post = postRepository.findById(id).orElseThrow(
+    public void delete(Long postId, PostDeleteDto postDeleteDto) {
+        Post post = postRepository.findById(postId).orElseThrow(
                 () -> new IllegalArgumentException("게시물이 존재하지 않습니다.")
         );
         post.passwordValid(postDeleteDto.getPassword());
