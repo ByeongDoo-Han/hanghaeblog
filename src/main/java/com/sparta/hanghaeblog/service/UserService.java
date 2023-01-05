@@ -29,7 +29,7 @@ public class UserService {
     @Transactional
     public User signUp(SignupRequestDto signupRequestDto){
         String username = signupRequestDto.getUsername();
-        String password = passwordEncoder.encode(signupRequestDto.getPassword());
+        String password = signupRequestDto.getPassword();
 
         // 회원 중복 확인
         Optional<User> found = userRepository.findByUsername(username);
