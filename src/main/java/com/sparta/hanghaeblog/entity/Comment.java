@@ -36,10 +36,7 @@ public class Comment extends Timestamped{
 
     @Column(nullable = false)
     private Integer commentViewCount;
-    @OneToMany(
-            cascade = CascadeType.ALL,
-            mappedBy = "comment"
-    )
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "comment")
     Set<CommentLike> commentLikes = new HashSet<>();
 
     //Dto 넣으면 안된다고 함

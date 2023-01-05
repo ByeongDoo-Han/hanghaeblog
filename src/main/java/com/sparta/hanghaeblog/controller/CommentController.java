@@ -1,9 +1,6 @@
 package com.sparta.hanghaeblog.controller;
 
-import com.sparta.hanghaeblog.dto.CommentDeleteDto;
-import com.sparta.hanghaeblog.dto.CommentRequestDto;
-import com.sparta.hanghaeblog.dto.CommentResponseDto;
-import com.sparta.hanghaeblog.dto.PostDeleteDto;
+import com.sparta.hanghaeblog.dto.*;
 import com.sparta.hanghaeblog.entity.Comment;
 import com.sparta.hanghaeblog.entity.Post;
 import com.sparta.hanghaeblog.entity.User;
@@ -14,6 +11,8 @@ import com.sparta.hanghaeblog.repository.UserRepository;
 import com.sparta.hanghaeblog.service.CommentService;
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -30,7 +29,7 @@ public class CommentController {
     private final CommentRepository commentRepository;
     private final CommentService commentService;
 
-    @PutMapping("{postId}/comments/{commentId}")
+    @PutMapping("/{postId}/comments/{commentId}")
     public CommentResponseDto updateComments(@PathVariable Long postId, @PathVariable Long commentId, @RequestBody CommentRequestDto requestDto, HttpServletRequest request) {
         // Request에서 Token 가져오기
         String token = jwtUtil.resolveToken(request); // 토큰 꺼내기
@@ -87,5 +86,4 @@ public class CommentController {
     public void deleteComment(@PathVariable Long postId, @PathVariable Long commentId, @RequestBody CommentDeleteDto commentDeleteDto){
         commentService.delete(postId, commentId, commentDeleteDto);
     }
-
 }

@@ -8,5 +8,7 @@ import java.time.LocalDateTime;
 public class CommentRequestDto {
 
     private String comment;
+    private String username;
+    private boolean admin = false;
     private String commentPassword;
 }

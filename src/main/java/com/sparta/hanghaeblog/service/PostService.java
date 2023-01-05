@@ -47,21 +47,37 @@ public class PostService {
 
     @Transactional
     public PostResponseDto updatePosts(Long postId, PostRequestDto postRequestDto) {
-        Post post = postRepository.findById(postId).orElseThrow(
-                () -> new IllegalArgumentException("게시물이 존재하지 않습니다.")
-        );
-        post.passwordValid(postRequestDto.getPassword());
-        post.update(postRequestDto);
-        return new PostResponseDto(post);
+        if(postRequestDto.isAdmin()){
+            Post post = postRepository.findById(postId).orElseThrow(
+                    () -> new IllegalArgumentException("")
+            );
+            post.update(postRequestDto);
+            return new PostResponseDto(post);
+        } else {
+            Post post = postRepository.findByPostIdAndUsername(postId, postRequestDto.getUsername()).orElseThrow(
+                    () -> new IllegalArgumentException("수정 권한이 없습니다.")
+            );
+            post.passwordValid(postRequestDto.getPassword());
+            post.update(postRequestDto);
+            return new PostResponseDto(post);
+        }
     }
 
     @Transactional
     public void delete(Long postId, PostDeleteDto postDeleteDto) {
-        Post post = postRepository.findById(postId).orElseThrow(
-                () -> new IllegalArgumentException("게시물이 존재하지 않습니다.")
-        );
-        post.passwordValid(postDeleteDto.getPassword());
-        postRepository.delete(post);
-        System.out.println("메세지 삭제에 성공했습니다.");
+        if(postDeleteDto.isAdmin()){
+            Post post = postRepository.findById(postId).orElseThrow(
+                    () -> new IllegalArgumentException("")
+            );
+            postRepository.delete(post);
+            System.out.println("메세지 삭제에 성공했습니다.");
+        } else {
+            Post post = postRepository.findByPostIdAndUsername(postId, postDeleteDto.getUsername()).orElseThrow(
+                    () -> new IllegalArgumentException("게시물이 존재하지 않습니다.")
+            );
+            post.passwordValid(postDeleteDto.getPassword());
+            postRepository.delete(post);
+            System.out.println("메세지 삭제에 성공했습니다.");
+        }
     }
 }

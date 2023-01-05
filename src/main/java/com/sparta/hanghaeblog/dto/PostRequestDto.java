@@ -10,5 +10,6 @@ public class PostRequestDto {
     private String username;
     private String contents;
     private String password;
+    private boolean admin = false;
     private LocalDateTime createdAt;
 }
