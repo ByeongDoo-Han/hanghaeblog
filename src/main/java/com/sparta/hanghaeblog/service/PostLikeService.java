@@ -41,46 +41,4 @@ public class PostLikeService {
     private boolean isNotAlreadyLike(User user, Post post) {
         return postLikeRepository.findByUserAndPost(user, post).isEmpty();
     }
-
-//    @Transactional
-//    public PostResponseDto likePost (Long postId, User user){
-//        Post post = postRepository.findById(postId).orElseThrow(()-> new IllegalArgumentException("글이 없습니다."));
-//        if(PostLikeRepository.findByUserNameAndPostId(user.getUsername()).isEmpty()) {
-//            PostLike postLike = PostLikeRepository.saveAndFlush(new PostLike(post, user));
-//            post.getPostLikes().add(postLike);
-//        }else if (PostLikeRepository.findByUserNameAndPostId(user.getUsername()).isPresent()) {
-//            PostLikeRepository.deleteByUsername(user.getUsername());
-//        }
-//        return PostResponseDto.from(post);
-//    }
-
-//    @Transactional
-//    public void insertPostLike(PostLikeRequestDto postLikeRequestDto) throws Exception {
-//
-//        User username = userRepository.findById(postLikeRequestDto.getUsername())
-//                .orElseThrow(() -> new NotFoundException("Could not found username"));
-//
-//        Post postId = postRepository.findById(postLikeRequestDto.getPostId())
-//                .orElseThrow(() -> new NotFoundException("Could not found postId"));
-//
-//
-//        PostLike postLike = new PostLike(username, postId);
-//        postLikeRepository.save(postLike);
-//        postId.addPostLike(postLike);
-    }
-
-//    @Transactional
-//    public void deletePostLike(PostLikeRequestDto postLikeRequestDto) {
-//
-////        User username = userRepository.findById(postLikeRequestDto.getUsername())
-////                .orElseThrow(() -> new NotFoundException("Could not found username : " + postLikeRequestDto.getUsername()));
-////
-////        Post postId = postRepository.findById(postLikeRequestDto.getPostId())
-////                .orElseThrow(() -> new NotFoundException("Could not found post id : " + postLikeRequestDto.getPostId()));
-////
-////        PostLike postLike = postLikeRepository.findByUserNameAndPostId(username, postId)
-////                .orElseThrow(() -> new NotFoundException("Could not found heart id"));
-//
-//        postLikeRepository.delete(postLike);
-//    }
-//}
+}
