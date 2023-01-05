@@ -49,8 +49,6 @@ public class Post extends Timestamped{
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
     Set<PostLike> postLikes = new HashSet<>();
 
-
-
     public Post(PostRequestDto requestDto){
         this.title = requestDto.getTitle();
         this.username = requestDto.getUsername();
@@ -73,9 +71,5 @@ public class Post extends Timestamped{
     }
     public void addCommentList(Comment comment){
         this.comments.add(comment);
-    }
-
-    public void addPostLike(PostLike postLike){
-        this.postLikes.add(postLike);
     }
 }

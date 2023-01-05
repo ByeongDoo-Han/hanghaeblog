@@ -34,6 +34,9 @@ public class PostLikeService {
             postLike.setPost(post);
             postLikeRepository.save(postLike);
             return true;
+        } else{
+            PostLike like = postLikeRepository.findByUserAndPost(user, post).orElseThrow();
+            postLikeRepository.delete(like);
         }
         return false;
     }

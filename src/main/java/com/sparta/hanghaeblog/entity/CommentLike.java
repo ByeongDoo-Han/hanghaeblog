@@ -11,13 +11,17 @@ import javax.persistence.*;
 @Getter
 @Entity
 public class CommentLike {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "commentLikeId")
+    private Long commentLikeId;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "commentId")
     private Comment comment;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "username")
     private User user;
 
 
