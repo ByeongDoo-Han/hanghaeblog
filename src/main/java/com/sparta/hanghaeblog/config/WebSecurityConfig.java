@@ -1,7 +1,6 @@
 package com.sparta.hanghaeblog.config;
 
-
-
+import com.sparta.hanghaeblog.security.UserDetailsServiceImpl;
 import com.sparta.hanghaeblog.jwt.JwtAuthFilter;
 import com.sparta.hanghaeblog.jwt.JwtUtil;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +21,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity // 스프링 Security 지원을 가능하게 함
 public class WebSecurityConfig extends WebSecurityConfiguration {
 
+    private final UserDetailsServiceImpl userDetailsService;
     private final JwtUtil jwtUtil;
 
     @Bean
@@ -36,12 +36,10 @@ public class WebSecurityConfig extends WebSecurityConfiguration {
                 .requestMatchers(PathRequest.toStaticResources().atCommonLocations()));
     }
 
-
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         // CSRF 설정
         http.csrf().disable();
-
 
         http.authorizeRequests()
                 .antMatchers("/api/auth/**")
@@ -49,13 +47,10 @@ public class WebSecurityConfig extends WebSecurityConfiguration {
                 .anyRequest()
                 .authenticated();
 
-
         // 로그인 사용
         http.formLogin();
 
-
         http.addFilterBefore(new JwtAuthFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
-
 
         return http.build();
     }

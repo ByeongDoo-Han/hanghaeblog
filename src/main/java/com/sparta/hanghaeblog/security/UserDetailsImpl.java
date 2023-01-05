@@ -2,7 +2,9 @@ package com.sparta.hanghaeblog.security;
 
 import com.sparta.hanghaeblog.entity.User;
 import com.sparta.hanghaeblog.entity.UserRoleEnum;
+
 import com.sparta.hanghaeblog.repository.UserRepository;
+
 import lombok.Getter;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -29,9 +31,6 @@ public class UserDetailsImpl implements UserDetails {
     public User getUser() {
         return user;
     }
-
-
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         UserRoleEnum role = user.getRole();

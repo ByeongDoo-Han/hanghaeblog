@@ -26,7 +26,7 @@ public class PostLikeController {
     private final UserRepository userRepository;
     private final PostLikeRepository postLikeRepository;
 
-    @PostMapping("{postId}/like")
+    @PostMapping("/{postId}/like")
     public ResponseEntity<String> addLike(
             @AuthenticationPrincipal UserDetailsImpl userDetailsImpl,
             @PathVariable Long postId){
