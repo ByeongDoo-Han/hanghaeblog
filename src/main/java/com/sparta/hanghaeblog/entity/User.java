@@ -15,6 +15,7 @@ import static javax.persistence.GenerationType.IDENTITY;
 @Entity(name = "users")
 public class User {
 
+    
     @Id
 //    @GeneratedValue(strategy = IDENTITY)
     @Column(nullable = false, unique = true)
