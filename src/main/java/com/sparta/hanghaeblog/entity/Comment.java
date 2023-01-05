@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -32,6 +34,13 @@ public class Comment extends Timestamped{
     )
     private Post post;
 
+    @Column(nullable = false)
+    private Integer commentViewCount;
+    @OneToMany(
+            cascade = CascadeType.ALL,
+            mappedBy = "comment"
+    )
+    Set<CommentLike> commentLikes = new HashSet<>();
 
     //Dto 넣으면 안된다고 함
     public Comment(User user, CommentRequestDto requestDto, Post post) {
@@ -39,6 +48,7 @@ public class Comment extends Timestamped{
         this.comment = requestDto.getComment();
         this.commentPassword = requestDto.getCommentPassword();
         this.post = post;
+        this.commentViewCount = commentLikes.size();
     }
 
     public static boolean isSameNameComment(Comment comment, User user) {

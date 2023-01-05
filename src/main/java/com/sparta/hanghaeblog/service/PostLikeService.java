@@ -24,11 +24,11 @@ public class PostLikeService {
     private final UserRepository userRepository;
     private final PostRepository postRepository;
 
-    public boolean addLike(User user, Long postId){
+    public boolean addLike(User user, Long postId) {
         Post post = postRepository.findById(postId).orElseThrow();
 
         //좋아요 중복 방지
-        if(isNotAlreadyLike(user, post)) {
+        if (isNotAlreadyLike(user, post)) {
             PostLike postLike = new PostLike();
             postLike.setUser(user);
             postLike.setPost(post);

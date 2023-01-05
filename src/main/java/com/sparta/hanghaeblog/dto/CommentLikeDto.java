@@ -6,15 +6,13 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class PostLikeRequestDto {
-
+public class CommentLikeDto {
 
     private String username;
-    private Long postId;
+    private Long commentId;
 
-    public PostLikeRequestDto(String username, Long postId) {
+    public CommentLikeDto(String username, Long commentId){
+        this.commentId = commentId;
         this.username = username;
-        this.postId = postId;
     }
 }
-
