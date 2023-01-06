@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.Valid;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
@@ -18,13 +19,9 @@ public class User {
     @Id
 //    @GeneratedValue(strategy = IDENTITY)
     @Column(nullable = false, unique = true)
-//    @Size(min = 4, max = 10)
-//    @Pattern(regexp = "^[a-z0-9]+$")
     private String username;
 
     @Column(nullable = false)
-//    @Size(min =8, max=15)
-//    @Pattern(regexp = "^[A-Za-z0-9]+$")
     private String password;
 
     @Column(nullable = false)
